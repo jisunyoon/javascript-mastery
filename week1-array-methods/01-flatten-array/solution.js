@@ -4,8 +4,33 @@
  * @returns {Array} 평탄화된 1차원 배열
  */
 const flatten = (arr) => {
-  // 여기에 코드를 작성하세요
+  return arr.reduce((acc, val) => {
+    if(Array.isArray(val)){
+      return acc.concat(flatten(val));
+    }else{
+      return acc.concat(val);
+    }
+  }, []);
 };
+
+// flat 사용
+// const flatten = (arr) => {
+//   return arr.flat(Infinity);
+// }
+
+// 반복문 사용
+// const flatten = (arr) => {
+//   let result = [];
+//   for(let item of arr){
+//     if(Array.isArray(item)){
+//       result.push(...flatten02(item));
+//     }else{
+//       result.push(item);
+//     }
+//   }
+
+//   return result
+// }
 
 // 테스트 코드
 console.log('Test 1:', flatten([1, 2, 3]));
