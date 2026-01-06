@@ -8,11 +8,11 @@
 // ========================================
 // 아래 변수들에 타입을 붙이세요
 
-let userName = "철수";
-let userAge = 25;
-let isStudent = true;
-let hobbies = ["독서", "운동", "영화"];
-let score = null;
+let userName: string = "철수";
+let userAge: number = 25;
+let isStudent : boolean = true;
+let hobbies : string[] = ["독서", "운동", "영화"];
+let score: number | null = null;
 
 
 // ========================================
@@ -20,7 +20,7 @@ let score = null;
 // ========================================
 // User 타입을 정의하고 user에 적용하세요
 
-const user = {
+const user: {id: number; name: string; email: string; age: number} = {
   id: 1,
   name: "철수",
   email: "chulsoo@email.com",
@@ -33,15 +33,15 @@ const user = {
 // ========================================
 // 함수들에 타입을 붙이세요
 
-function add(a, b) {
+function add(a: number, b: number) {
   return a + b;
 }
 
-function greet(name) {
+function greet(name: string) : void {
   console.log(`안녕하세요, ${name}님!`);
 }
 
-const multiply = (a, b) => a * b;
+const multiply = (a: number, b:number) => a * b;
 
 
 // ========================================
@@ -49,10 +49,10 @@ const multiply = (a, b) => a * b;
 // ========================================
 // 타입을 붙이세요
 
-let numbers = [1, 2, 3, 4, 5];
-let names = ["철수", "영희", "민수"];
-let mixed = [1, "hello", true];
-let point = [10, 20];  // x, y 좌표
+let numbers : number[] = [1, 2, 3, 4, 5];
+let names: string[] = ["철수", "영희", "민수"];
+let mixed: (number | string | boolean)[] = [1, "hello", true];
+let point: [number,number] = [10, 20];  // x, y 좌표
 
 
 // ========================================
@@ -65,7 +65,10 @@ let point = [10, 20];  // x, y 좌표
 // - description: 문자열, 선택적
 
 type Product = {
-  // 여기에 작성
+  readonly id: number
+  name: string
+  price: number
+  description?: string
 };
 
 
@@ -75,7 +78,9 @@ type Product = {
 // status는 "loading" | "success" | "error" 중 하나
 // id는 string 또는 number
 
-let status = "loading";
+type Status = "loading" | "success" | "error";
+let status1: Status = "loading";
+type ID = string | number;
 let id = 123;
 
 
@@ -84,8 +89,14 @@ let id = 123;
 // ========================================
 // value가 string이면 대문자로, number면 2배로
 
-function process(value: unknown) {
-  // 여기에 코드 작성
+function process (value: unknown): string | number | undefined {
+    if(typeof value === "string"){
+      return value.toUpperCase();
+    }
+    if (typeof value === "number"){
+      return value * 2 ;
+    }
+    return undefined;
 }
 
 
