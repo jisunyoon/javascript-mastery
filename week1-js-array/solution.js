@@ -36,7 +36,6 @@ const flatten = (arr) => {
 // 02. groupBy
 const groupBy = (arr, key) => {
   // 여기에 코드 작성
-  
 };
 
 // 03. pipe
@@ -59,8 +58,7 @@ const chunk = (arr, size) => {
 
 // 06. deepMap
 const deepMap = (arr, fn) => {
-  // 여기에 코드 작성
-  
+
 };
 
 // 07. cartesian

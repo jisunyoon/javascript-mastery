@@ -16,8 +16,10 @@
 
 function Exercise01() {
   return (
-    // 여기에 JSX 작성
-    <div>Exercise 01</div>
+    <div class="container">
+      <h1>안녕하세요</h1>
+      <p>React 학습 중입니다</p>
+    </div>
   );
 }
 
@@ -32,7 +34,9 @@ function Exercise02() {
 
   return (
     <div>
-      {/* name, age, isStudent를 표시하세요 */}
+        <p>이름: {name}</p>
+        <p>나이: {age}</p>
+        <p>학생 여부: {isStudent ? "true" : "false"}</p>
     </div>
   );
 }
@@ -44,8 +48,7 @@ function Exercise02() {
 // "안녕하세요!"를 표시하는 Greeting 컴포넌트
 
 function Greeting() {
-  // 여기에 코드 작성
-  return null;
+  return <p>안녕하세요!</p>;
 }
 
 
@@ -55,12 +58,11 @@ function Greeting() {
 // name을 받아서 "안녕하세요, {name}님!" 표시
 
 interface GreetingWithNameProps {
-  // 타입 정의
+  name: string;
 }
 
-function GreetingWithName() {
-  // 여기에 코드 작성
-  return null;
+function GreetingWithName({name}: GreetingWithNameProps) {
+  return <p>안녕하세요, {name}님!</p>;
 }
 
 
@@ -73,12 +75,18 @@ function GreetingWithName() {
 // - email: 문자열 (선택)
 
 interface UserCardProps {
-  // 타입 정의
+  name: string,
+  age: number,
+  email?: string
 }
 
-function UserCard() {
-  // 여기에 코드 작성
-  return null;
+function UserCard({name, age, email} : UserCardProps) {
+  return 
+  <div>
+    <p>이름 : {name}</p>
+    <p>나이 : {age}</p>
+    {email && <p>이메일 : {email}</p>}
+  </div>;
 }
 
 
@@ -88,12 +96,17 @@ function UserCard() {
 // Card 컴포넌트 (title + children)
 
 interface CardProps {
-  // 타입 정의
+  title: string,
+  children: React.ReactNode
 }
 
-function Card() {
-  // 여기에 코드 작성
-  return null;
+function Card({title,children}: CardProps) {
+  return (
+    <div>
+      <h1>{title}</h1>
+      <div>{children}</div>
+    </div>
+  )
 }
 
 
@@ -106,12 +119,30 @@ function Card() {
 // - disabled: boolean (선택)
 
 interface ButtonProps {
-  // 타입 정의
+  label: string,
+  onClick: () => void;
+  variant?: "primary" | "secondary"
+  disabled?: boolean;
 }
 
-function Button() {
-  // 여기에 코드 작성
-  return null;
+function Button({
+  label,
+  onClick,
+  variant = "primary",
+  disabled = false,
+}: ButtonProps) {
+  return (
+    <button
+      className={`btn btn-${variant}`}
+      onClick={onClick}
+      disabled={disabled}
+      style={{
+        backgroundColor: variant === 'primary' ? '#eee' : '#000',
+      }}
+    >
+      {label}
+    </button>
+  );
 }
 
 
@@ -133,16 +164,17 @@ function App() {
       <Greeting />
       
       <h2>04. GreetingWithName</h2>
-      {/* <GreetingWithName name="철수" /> */}
+      <GreetingWithName name="지선" />
+
       
       <h2>05. UserCard</h2>
-      {/* <UserCard name="철수" age={25} /> */}
+      <UserCard name="지선" age={31} email="jisun@naver.com"/>
       
       <h2>06. Card</h2>
-      {/* <Card title="공지사항"><p>내용입니다</p></Card> */}
+      <Card title="공지사항"><p>내용입니다</p></Card>
       
       <h2>07. Button</h2>
-      {/* <Button label="클릭" onClick={() => alert('클릭!')} /> */}
+      <Button label="클릭" onClick={() => alert('클릭!')} />
     </div>
   );
 }
