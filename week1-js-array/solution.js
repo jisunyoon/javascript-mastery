@@ -35,36 +35,68 @@ const flatten = (arr) => {
 
 // 02. groupBy
 const groupBy = (arr, key) => {
-  // 여기에 코드 작성
+  let result = {};
+
+  for(let item of arr){
+    let groupName = item[key];
+    if(!result[groupName]){
+      result[groupName] = []
+    }
+    result[groupName].push(item);
+  }
+  return result;
 };
 
 // 03. pipe
 const pipe = (...fns) => (x) => {
-  // 여기에 코드 작성
+  return fns.reduce((acc , fn) => {
+    return fn(acc);
+  }, x);
   
 };
 
 // 04. uniqueBy
 const uniqueBy = (arr, key) => {
-  // 여기에 코드 작성
+  const uniqueBySet = new Set();
+  return arr.filter(item => {
+    const value = item[key];
+    if(uniqueBySet.has(value)){
+      return false;
+    }else{
+      uniqueBySet.add(value);
+      return true;
+    }
+  })
   
 };
 
 // 05. chunk
 const chunk = (arr, size) => {
-  // 여기에 코드 작성
-  
+  const result = [];
+  for(let i = 0; i < arr.length; i += size){
+     result.push(arr.slice(i, i + size));
+  }
+  return result;
 };
 
 // 06. deepMap
 const deepMap = (arr, fn) => {
-
+  return arr.map(item => {
+    if(Array.isArray(item)){
+      return deepMap(item,fn);
+    }else {
+      return fn(item);
+    }
+  })
 };
 
 // 07. cartesian
+// const cartesian = (arr1, arr2) => {
+//   return arr1.flatMap(a => arr2.map(b => [a,b]));
+// };
+
 const cartesian = (arr1, arr2) => {
-  // 여기에 코드 작성
-  
+  return arr1.map(a => arr2.map(b => [a, b])).flat();
 };
 
 // ========== 테스트 ==========
