@@ -1,19 +1,8 @@
-# Week 2 (수): React useState, useEffect ⚛️
+/**
+ * Week 2 (수): React useState, useEffect - 정답
+ */
+import { useState, useEffect } from 'react';
 
----
-
-## 01. useState 기본 - 카운터
-
-```tsx
-function Counter() {
-  // count 상태, +1/-1 버튼
-}
-```
-
-<details>
-<summary>✅ 정답</summary>
-
-```tsx
 function Counter() {
   const [count, setCount] = useState(0);
   return (
@@ -24,109 +13,43 @@ function Counter() {
     </div>
   );
 }
-```
-</details>
 
----
-
-## 02. useState 객체
-
-```tsx
-function UserForm() {
-  // user: { name, age }
-}
-```
-
-<details>
-<summary>✅ 정답</summary>
-
-```tsx
 function UserForm() {
   const [user, setUser] = useState({ name: '', age: 0 });
   return (
     <div>
       <input 
+        placeholder="이름"
         value={user.name} 
         onChange={e => setUser({ ...user, name: e.target.value })} 
       />
       <input 
         type="number"
+        placeholder="나이"
         value={user.age} 
         onChange={e => setUser({ ...user, age: Number(e.target.value) })} 
       />
+      <p>이름: {user.name}, 나이: {user.age}</p>
     </div>
   );
 }
-```
-</details>
 
----
-
-## 03. useEffect 마운트
-
-```tsx
-function MountLogger() {
-  // 마운트: "마운트!"
-  // 언마운트: "언마운트!"
-}
-```
-
-<details>
-<summary>✅ 정답</summary>
-
-```tsx
 function MountLogger() {
   useEffect(() => {
     console.log('마운트!');
     return () => console.log('언마운트!');
   }, []);
-  return <div>MountLogger</div>;
+  return <div>MountLogger (콘솔 확인)</div>;
 }
-```
-</details>
 
----
-
-## 04. useEffect 의존성
-
-```tsx
 function TitleUpdater() {
   const [count, setCount] = useState(0);
-  // count 바뀔 때마다 document.title 업데이트
-}
-```
-
-<details>
-<summary>✅ 정답</summary>
-
-```tsx
-function TitleUpdater() {
-  const [count, setCount] = useState(0);
-  
   useEffect(() => {
     document.title = `Count: ${count}`;
   }, [count]);
-  
-  return <button onClick={() => setCount(c => c + 1)}>+1</button>;
+  return <button onClick={() => setCount(c => c + 1)}>+1 ({count})</button>;
 }
-```
-</details>
 
----
-
-## 05. 타이머
-
-```tsx
-function Timer() {
-  // seconds, isRunning
-  // 시작/정지/리셋
-}
-```
-
-<details>
-<summary>✅ 정답</summary>
-
-```tsx
 function Timer() {
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
@@ -149,28 +72,11 @@ function Timer() {
     </div>
   );
 }
-```
-</details>
 
----
-
-## 06. 데이터 Fetch
-
-```tsx
 function UserList() {
-  // loading, error, users
-  // fetch from jsonplaceholder
-}
-```
-
-<details>
-<summary>✅ 정답</summary>
-
-```tsx
-function UserList() {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   
   useEffect(() => {
     fetch('https://jsonplaceholder.typicode.com/users')
@@ -181,26 +87,9 @@ function UserList() {
   
   if (loading) return <p>로딩 중...</p>;
   if (error) return <p>에러: {error}</p>;
-  return <ul>{users.map(u => <li key={u.id}>{u.name}</li>)}</ul>;
+  return <ul>{users.slice(0,5).map(u => <li key={u.id}>{u.name}</li>)}</ul>;
 }
-```
-</details>
 
----
-
-## 07. 검색 디바운스
-
-```tsx
-function SearchInput() {
-  // query, debouncedQuery
-  // 500ms 후 검색
-}
-```
-
-<details>
-<summary>✅ 정답</summary>
-
-```tsx
 function SearchInput() {
   const [query, setQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
@@ -212,30 +101,39 @@ function SearchInput() {
   
   return (
     <div>
-      <input value={query} onChange={e => setQuery(e.target.value)} />
+      <input 
+        value={query} 
+        onChange={e => setQuery(e.target.value)}
+        placeholder="검색..."
+      />
+      <p>입력: {query}</p>
       <p>검색어: {debouncedQuery}</p>
     </div>
   );
 }
-```
-</details>
 
----
+function App() {
+  const [show, setShow] = useState(true);
+  return (
+    <div style={{ padding: 20 }}>
+      <h1>Week 2: React - 정답</h1>
+      <h2>01. Counter</h2>
+      <Counter />
+      <h2>02. UserForm</h2>
+      <UserForm />
+      <h2>03. MountLogger</h2>
+      <button onClick={() => setShow(!show)}>{show ? '숨기기' : '보이기'}</button>
+      {show && <MountLogger />}
+      <h2>04. TitleUpdater</h2>
+      <TitleUpdater />
+      <h2>05. Timer</h2>
+      <Timer />
+      <h2>06. UserList</h2>
+      <UserList />
+      <h2>07. SearchInput</h2>
+      <SearchInput />
+    </div>
+  );
+}
 
-## 💡 핵심 정리
-
-```tsx
-// useState
-const [state, setState] = useState(초기값);
-setState(prev => prev + 1);
-
-// useEffect
-useEffect(() => {
-  // 실행
-  return () => { /* cleanup */ };
-}, [의존성]);
-
-// 의존성
-[]         // 마운트 1번
-[count]    // count 바뀔 때
-```
+export default App;

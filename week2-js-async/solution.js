@@ -3,15 +3,30 @@
  */
 
 const fetchSequentially = async (urls) => {
-  // 여기에 코드 작성
+  const result = [];
+  for (let url of urls){
+    const res = await fetch(url);
+    const data = res.json();
+    result.push(data);
+  }
+  return result;
 };
 
 const fetchParallel = async (urls) => {
-  // 여기에 코드 작성
+  return Promise.all(urls.map(url => fetch(url).then(res => res.json())))
 };
 
 const fetchWithRetry = async (url, retries = 3) => {
-  // 여기에 코드 작성
+  for (let i = 0; i < retries; i++){
+    try{
+      const res = await fetch(url);
+      const data = await res.json();
+      return data;
+    }catch{
+      console.error('실패 했습니다. 다시 시도해주세요')
+    }
+  }
+  throw new Error ('모두 다 실패했습니다. ')
 };
 
 const fetchWithTimeout = (url, timeout = 5000) => {
@@ -23,11 +38,17 @@ const promiseAll = (promises) => {
 };
 
 const asyncMap = async (arr, asyncFn) => {
-  // 여기에 코드 작성
+  return Promise.all(arr.map(item => asyncFn(item)))
 };
 
 const sleep = (ms) => {
-  // 여기에 코드 작성
+  return new Promise(
+    resolve => {
+      setTimeout(() => {
+        resolve();
+      }, ms)
+    }
+  )
 };
 
 // 테스트
