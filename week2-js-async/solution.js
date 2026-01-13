@@ -30,11 +30,33 @@ const fetchWithRetry = async (url, retries = 3) => {
 };
 
 const fetchWithTimeout = (url, timeout = 5000) => {
-  // 여기에 코드 작성
+  return Promise.race([
+    fetch(url).then(res => res.json()),
+    new Promise((_, reject) => {
+      setTimeout(() => {
+       reject('timeout!') 
+      }, timeout)
+    })
+  ])
 };
 
 const promiseAll = (promises) => {
-  // 여기에 코드 작성
+  return new Promise((resolve, reject) => {
+    const result = [];
+    let completedCount = 0;
+    promises.forEach((promise, index) => {
+      Promise.then(value => {
+        result[index] = value;
+        completedCount++
+
+        if(completedCount === promise.length){
+          resolve(result);
+        }
+      })
+    })
+  })
+  
+
 };
 
 const asyncMap = async (arr, asyncFn) => {
