@@ -7,7 +7,21 @@ import { useState, useEffect } from 'react';
 // 01. Counter
 function Counter() {
   // 작성
-  return <div>Counter</div>;
+  const [count,setCount] = useState(0);
+
+  const handleAddCount = () => {
+    setCount(count + 1);
+  }
+
+  return (
+    <div>
+      <p>{count}</p>
+      <div>
+        <button onClick={handleAddCount}>+1</button>
+        <button onClick={() => setCount(count -1)}>-1</button>
+      </div>
+    </div>
+  )
 }
 
 // 02. UserForm

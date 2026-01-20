@@ -1,22 +1,41 @@
 // Week 2 TS: solution.ts
 
 interface User {
-  // 01. 작성
+  id: number;
+  name: string;
+  email: string;
+  createAt: Date;
 }
 
 interface Post {
-  // 02. 작성
+  readonly id: number;
+  title:string;
+  content:string;
+  tag?: string[];
+  publishedAt?: Date;
 }
 
-type Status = // 03. 작성
+type Status = "idle" | "loading" | "success" | "error"
 
-type Admin = // 04. 작성
-
-interface Dog /* 05. 작성 */ {
+type Admin = User & {
+  role: string;
+  permissions: string[]
 }
 
-type Callback = // 06. 작성
+interface Animal {
+  name: string;
+  age: number;
+}
+
+interface Dog extends Animal{
+  breed: string;
+  bark(): void;
+}
+
+
+type Callback = (data: string) => void;
+
 
 interface Dictionary {
-  // 07. 작성
+  [key: string]: string
 }
