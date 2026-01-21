@@ -26,38 +26,169 @@ function Counter() {
 
 // 02. UserForm
 function UserForm() {
-  // 작성
-  return <div>UserForm</div>;
+  // user: { name, age }
+  const [ name, setName ] = useState('');
+  const [ age, setAge ] = useState(0);
+  const [ submitted, setSubmitted ] = useState(null);
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
+  }
+
+  const handleAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAge(Number(e.target.value));
+  }
+  
+  const handleSubmit = () => {
+    setSubmitted({name,age});
+  }
+  return (
+    <div>
+      <input type="text" value={name} onChange={handleNameChange} />
+      <input type="number" value={age} onChange={handleAgeChange} />
+      <button onClick={handleSubmit}>
+        {submitted ? 'Submitted' : 'Submit'}
+      </button>
+    </div>
+  )
 }
+
+// function UserForm (){
+//   const [user, setUser] = useState({name: '', age: 0});
+//   const [ submitted, setSubmitted ] = useState(null);
+
+//   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//     setUser({...user, name: e.target.value});
+//   }
+//   const handleAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//     setUser({...user, age: Number(e.target.value)});
+//   }
+//   const handleSubmit = () => {
+//     setUser({name:user.name, age:user.age});
+//   }
+//   return (
+//     <div>
+//       <input type="text" value={name} onChange={handleNameChange} />
+//       <input type="number" value={age} onChange={handleAgeChange} />
+//       <button onClick={handleSubmit}>
+//         {submitted ? 'Submitted' : 'Submit'}
+//       </button>
+//     </div>
+//   )
+// }
 
 // 03. MountLogger
 function MountLogger() {
-  // 작성
+  useEffect(()=>{
+    console.log('mount');
+
+    return () => {
+      console.log('unmount');
+    }
+  }, [])
+
+
   return <div>MountLogger</div>;
 }
 
 // 04. TitleUpdater
 function TitleUpdater() {
-  // 작성
-  return <div>TitleUpdater</div>;
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    document.title = `Count : ${count}`
+  }, [count])
+  return (
+    <div>
+      <p>{count}</p>
+      <button onClick={() => setCount(count + 1)}>+1</button>
+    </div>
+  )
 }
 
 // 05. Timer
 function Timer() {
-  // 작성
-  return <div>Timer</div>;
+  const [ seconds, setSeconds ] = useState(0);
+  const [ isRunning, setIsRunning ] = useState(false);
+
+  useEffect(() => {
+    if(isRunning){
+      const timer = setInterval(() => {
+        setSeconds(prev => prev + 1);
+      }, 1000);
+
+      return () => {
+        clearInterval(timer)
+      }
+    }
+  }, [isRunning])
+  return (
+    <div>
+      <p>{seconds}</p>
+      <button onClick={() => {setIsRunning(!isRunning)}}>
+        {isRunning ? '정지' : '시작'}
+      </button>
+    </div>
+  )
 }
 
 // 06. UserList
 function UserList() {
-  // 작성
-  return <div>UserList</div>;
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetch('https://test.test.com/user')
+    .then(res => res.json())
+    .then(data => {
+      setUsers(data);
+      setLoading(false);
+    })
+    .catch(error => {
+      setError(error.message);
+      setLoading(false);
+    })
+  }, [])
+  return (
+    <div>
+      {loading && <p>로딩중...</p>}
+      {error && <p>에러</p>}
+      {!loading && !error && (
+        <div>
+          {users.map(user => (
+            <div key={user.id}>{user.name}</div>
+          ))}
+        </div>
+      )}
+    </div>
+
+  );
 }
 
 // 07. SearchInput
 function SearchInput() {
-  // 작성
-  return <div>SearchInput</div>;
+  const [query, setQuery] = useState('');          
+  const [debouncedQuery, setDebouncedQuery] = useState(''); 
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedQuery(query)
+    }, 300);
+    return () => {
+      clearTimeout(timer);
+    }
+  }, [query])
+  return (
+    <div>
+      <input 
+        value={query} 
+        onChange={(e) => setQuery(e.target.value)} 
+      />
+      <p>입력: {query}</p>
+      <p>검색어: {debouncedQuery}</p>
+    </div>
+  );
 }
 
 // App
