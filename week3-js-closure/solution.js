@@ -3,31 +3,77 @@
  */
 
 const createCounter = () => {
-  // 여기에 코드 작성
+  let count = 0;
+  const increment = () => {
+    count++;
+    return count;
+  }
+
+  const decrement = () => {
+    count--;
+    return count;
+  }
+
+  const getValue = () => {
+    return count;
+  }
+
+  return {increment, decrement, getValue}
 };
 
 const memoize = (fn) => {
-  // 여기에 코드 작성
+  let cache = {};
+  return (arg) => {
+    if(cache[arg] !== undefined){
+      cache[arg]
+    }
+    const result = fn(arg);
+    cache[arg] = result;
+    return result;
+  }
 };
 
 const curry = (fn) => {
-  // 여기에 코드 작성
+  return function curried (...args){
+    if(arg.length >= fn.length){
+      return fn(...args)
+    }else{
+      return (...nextArgs) => curried(...args, ...nextArgs);
+    }
+  }
 };
 
 const once = (fn) => {
-  // 여기에 코드 작성
+  let called = false;
+  let result;
+
+  return(...args) => {
+    if(!called){
+      called = true;
+      result = fn(...args);
+    }
+    return result;
+  }
 };
 
-const compose = (...fns) => (x) => {
-  // 여기에 코드 작성
+const compose = (...fns) => {
+  return (x) => fns.reduceRight((acc, fn) => fn(acc), x);
 };
 
 const partial = (fn, ...preset) => {
-  // 여기에 코드 작성
+  return (...laterArgs) => {
+    return fn(...preset, ...laterArgs);
+  }
 };
 
 const createQueue = () => {
-  // 여기에 코드 작성
+  const items = [];
+  return {
+    enqueue: (item) => items.push(item),
+    dequeue: () => items.shift(),
+    size: () => items.length,
+    isEmpty: () => items.length === 0
+  }
 };
 
 // 테스트
